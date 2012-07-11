@@ -31,6 +31,10 @@
     overflow:auto;
   }
 
+  article pre.half-margin-top {
+    margin-top:20px;
+  }
+
   img.logo {
     position:absolute;
     top:20px;
@@ -44,7 +48,7 @@
     <section class='slides layout-regular template-default'>
 
       <article>
-        <h1>Command.js</h1>
+        <h1>cmd.js</h1>
         <p>Chris Newton</p>
         <p class="smaller spacious">
           <strong><a href="http://asyncjs.com/modular/">Async</a></strong> – 12th July, 2012<br />
@@ -61,7 +65,7 @@
       </article>
 
       <article>
-        <h2>Traditional Approach</h2>
+        <h2>Regular Approach</h2>
         <div class="build">
           <p>Markup script elements one after the other.</p>
           <p>Scripts are loaded in sequence.</p>
@@ -71,9 +75,10 @@
       </article>
 
       <article>
-        <h3>Example</h3>
+        <h3>Typical HTML page</h3>
         <pre class="build"><span>&lt;html&gt;
   &lt;head&gt;
+    &lt;!-- omitted --&gt;
     &lt;script src=&quot;jquery.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;jquery-plugin-1.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;jquery-plugin-2.js&quot;&gt;&lt;/script&gt;
@@ -87,9 +92,81 @@
     &lt;script src=&quot;twitter-widget.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;flickr-widget.js&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
-&lt;/html&gt;</span>
-</pre>
+&lt;/html&gt;</span></pre>
+      </article>
 
+      <article>
+        <h2>Why use cmd.js?</h2>
+      </article>
+
+      <article>
+        <h3>Bit more succinct...</h3>
+        <pre><span>&lt;html&gt;
+  &lt;head&gt;
+    &lt;!-- omitted --&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- omitted --&gt;
+    &lt;script src=&quot;cmd.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;site-script.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</span></pre>
+      </article>
+
+      <article>
+        <h3>Examples</h3>
+        <div class="build">
+          <div style="margin-top:40px">
+            <p>Load a single script</p>
+            <pre class="half-margin-top">cmd('im-important.js');</pre>
+          </div>
+          <div>
+            <p>Load &amp; execute scripts one after the other</p>
+            <pre class="half-margin-top">cmd('he-needs-me.js', 'i-need-him.js');</pre>
+          </div>
+          <div>
+            <p>Load scripts in parallel</p>
+            <pre class="half-margin-top">cmd(['i-dont-need-nothing.js', 'i-will-fire-when-ready.js']);</pre>
+          </div>
+          <small>So far so good...</small>
+        </div>
+      </article>
+
+      <article>
+        <h3>Callbacks</h3>
+        <div class="build">
+          <div style="margin-top:40px">
+            <p>Just one callback.</p>
+            <pre class="half-margin-top">cmd('prettify.js', function () {
+  prettyPrint();
+});</pre>
+          </div>
+          <div>
+            <p>Many callbacks!</p>
+            <pre class="half-margin-top">cmd(
+  'does-nothing-onload.js',
+  nowItDoes,
+  'also-does-nothing.js',
+  nowItDoesToo
+);</pre>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <!-- Refer back to beginning example, show how you'd handle it -->
+      </article>
+
+      <article>
+        <!-- Show various options -->
+      </article>
+
+      <article>
+        <!-- Show an example of flow control e.g. dev mode -->
+      </article>
+
+      <article>
+        <!-- Whatever you're checking for on the server, why not check on the client? page specific script -->
       </article>
 
       <!--<article>
