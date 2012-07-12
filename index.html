@@ -65,16 +65,24 @@
       </article>
 
       <article>
-        <h2>Regular Approach</h2>
+        <h2>What is cmd.js?</h2>
         <div class="build">
+          <p>A lightweight, asynchronous flow controller / file loader.</p>
+          <p>Can load and execute a series of JavaScript files. Either in parallel or in sequence.</p>
+        </div>
+      </article>
+
+      <!--<article>
+        <h2>Regular Approach</h2>
+        <div>
           <p>Markup script elements one after the other.</p>
           <p>Scripts are loaded in sequence.</p>
           <p>Scripts coupled with HTML.</p>
           <p>Limited to no flow control.</p>
         </div>
-      </article>
+      </article>-->
 
-      <article>
+      <!--<article>
         <h3>Typical HTML page</h3>
         <pre class="build"><span>&lt;html&gt;
   &lt;head&gt;
@@ -97,9 +105,7 @@
 
       <article>
         <h2>Why use cmd.js?</h2>
-      </article>
-
-      <article>
+        <div class="build">
         <h3>Bit more succinct...</h3>
         <pre><span>&lt;html&gt;
   &lt;head&gt;
@@ -110,25 +116,24 @@
     &lt;script src=&quot;cmd.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;site-script.js&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
-&lt;/html&gt;</span></pre>
-      </article>
+&lt;/html&gt;</span></pre></div>
+      </article>-->
 
       <article>
-        <h3>Examples</h3>
+        <h3>cmd.js in action</h3>
         <div class="build">
           <div style="margin-top:40px">
-            <p>Load a single script</p>
-            <pre class="half-margin-top">cmd('im-important.js');</pre>
+            <p>Load a single script <small>(remote or local)</small></p>
+            <pre class="half-margin-top">cmd('http://example.com/im-important.js');</pre>
           </div>
           <div>
-            <p>Load &amp; execute scripts one after the other</p>
+            <p>Load &amp; execute scripts one after the other <small>(dependencies!)</small></p>
             <pre class="half-margin-top">cmd('he-needs-me.js', 'i-need-him.js');</pre>
           </div>
           <div>
             <p>Load scripts in parallel</p>
             <pre class="half-margin-top">cmd(['i-dont-need-nothing.js', 'i-will-fire-when-ready.js']);</pre>
           </div>
-          <small>So far so good...</small>
         </div>
       </article>
 
@@ -136,13 +141,13 @@
         <h3>Callbacks</h3>
         <div class="build">
           <div style="margin-top:40px">
-            <p>Just one callback.</p>
-            <pre class="half-margin-top">cmd('prettify.js', function () {
-  prettyPrint();
+            <p>Check if a script has loaded ok.</p>
+            <pre class="half-margin-top">cmd('prettify.js', function (loadedOk) {
+  if (loadedOk) prettyPrint();
 });</pre>
           </div>
           <div>
-            <p>Many callbacks!</p>
+            <p>Add as many callbacks as you like.</p>
             <pre class="half-margin-top">cmd(
   'does-nothing-onload.js',
   nowItDoes,
@@ -154,19 +159,125 @@
       </article>
 
       <article>
-        <!-- Refer back to beginning example, show how you'd handle it -->
+        <h3>What I use cmd.js to solve...</h3>
+        <pre class="build"><span>&lt;html&gt;
+  &lt;head&gt;
+    &lt;!-- omitted --&gt;
+    &lt;script src=&quot;jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;jquery-plugin-1.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;jquery-plugin-2.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;underscore.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;site-script.js&quot;&gt;&lt;/script&gt;</span><span>
+    &lt;!--[if lt IE 9]&gt;&lt;script src=&quot;shiv.js&quot;&gt;&lt;/script&gt;&lt;![endif]--&gt;</span><span>
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- omitted --&gt;
+    &lt;script src=&quot;google-analytics.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;twitter-widget.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;flickr-widget.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</span></pre>
       </article>
 
       <article>
-        <!-- Show various options -->
+        <h3>Cleaner and self contained</h3>
+        <pre>cmd(
+  'jquery.js',
+  [
+    'jquery-plugin-1.js',
+    'jquery-plugin-2.js',
+    'underscore.js'
+  ],
+  'site-script.js'
+);</pre>
+        <div class="build">
+          <p>Load jQuery first.</p>
+          <p>Load the plugins &amp; Underscore in parallel.</p>
+          <p>Load site script last.</p>
+        </div>
       </article>
 
       <article>
-        <!-- Show an example of flow control e.g. dev mode -->
+        <h3>Flow Control</h3>
+        <div class="build">
+          <div style="margin-top:40px">
+            <p>Minified or unminified?</p>
+            <pre class="half-margin-top">var ext = devMode ? '.js' : '.min.js';
+
+cmd(
+  'site-script' + ext,
+  'another-script' + ext
+);</pre>
+          </div>
+          <div>
+            <p>Load scripts based on user input.</p>
+            <pre class="half-margin-top">if (userAcceptsCookies) {
+  cmd('google-analytics.js');
+}</pre>
+          </div>
+        </div>
       </article>
 
       <article>
-        <!-- Whatever you're checking for on the server, why not check on the client? page specific script -->
+        <h3>Options</h3>
+        <div class="build">
+          <div style="margin-top:40px">
+            <p>Prepend a path to every script</p>
+            <pre class="half-margin-top">cmd(
+  'jquery.js',
+  [
+    'jquery-plugin-1.js',
+    'jquery-plugin-2.js'
+  ],
+  {
+    path: '/js/vendor/jquery/'
+  }
+);</pre>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <h3>Options</h3>
+        <div class="build">
+          <div style="margin-top:40px">
+            <p>Improved devmode <small>(preventing script caching)</small></p>
+            <pre class="half-margin-top">var ext = devMode ? '.js' : '.min.js';
+
+cmd(
+  'site-script' + ext,
+  'another-script' + ext,
+  {
+    path: '/js/',
+    noCache: true
+  }
+);</pre>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <h2>cmd.js is great for</h2>
+        <div class="build">
+          <p>Conditionally loading scripts.</p>
+          <p>Managing dependencies.</p>
+          <p>Ensuring scripts are being loaded.</p>
+          <p>Relying less on markup.</p>
+        </div>
+      </article>
+
+      <article>
+        <h1>Thank you.</h1>
+        <p>Chris Newton</p>
+        <p class="smaller spacious">
+          <strong><a href="http://asyncjs.com/modular/">Async</a></strong> – 12th July, 2012<br />
+
+          <strong>Repo</strong> – <a href="https://github.com/premasagar/cmd.js">https://github.com/premasagar/cmd.js</a><br />
+          <strong>Slides</strong> – <a href="http://chrisnewtn.github.com/cmd-async-slides">http://chrisnewtn.github.com/cmd-async-slides</a><br />
+          <strong>Repo for slides</strong> – <a href="http://">https://github.com/chrisnewtn/cmd-async-slides</a><br />
+          <a rel="me" href="http://twitter.com/chrisnewtn">@chrisnewtn</a> ╱
+          <a rel="me" href="http://chrisnewtn.com">chrisnewtn.com</a>
+        </p>
       </article>
 
       <!--<article>
